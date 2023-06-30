@@ -1,32 +1,38 @@
 package main
 
 import (
-	"embed"
+	_ "embed"
+	"go-vue-gitIssueList/backend/config"
+	"go-vue-gitIssueList/backend/image"
+	"go-vue-gitIssueList/backend/stat"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
-	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 )
 
-//go:embed all:frontend/dist
-var assets embed.FS
+//go:embed frontend/dist/app.js
+var js string
+
+//go:embed frontend/dist/app.css
+var css string
 
 func main() {
-	// Create an instance of the app structure
 	app := NewApp()
 
-	// Create application with options
+	cfg := config.NewConfig()
+	st := stat.NewStat()
+	fm := image.NewFileManager(cfg, st)
+
 	err := wails.Run(&options.App{
-		Title:  "go-vue-issuelist",
-		Width:  1024,
-		Height: 768,
-		AssetServer: &assetserver.Options{
-			Assets: assets,
-		},
+		Width:            1200,
+		Height:           742,
+		Title:            "Optimus",
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
-		OnStartup:        app.startup,
 		Bind: []interface{}{
 			app,
+			cfg,
+			st,
+			fm,
 		},
 	})
 
