@@ -1,4 +1,4 @@
-module vuePost
+module changeme
 
 go 1.18
 
