@@ -1,19 +1,29 @@
-import 'core-js/stable'
-import 'regenerator-runtime/runtime'
-import Vue from 'vue'
+import {createApp} from 'vue'
+
 import App from './App.vue'
-import store from './store'
-import * as Wails from '@wailsapp/runtime'
-import VTooltip from 'v-tooltip'
+import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import 'element-plus/dist/index.css'
+import router from '@/router'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import setupComponent from '@/components'
+import '@/styles/style.scss' // global css
 
-Vue.use(VTooltip, { defaultDelay: 600, defaultOffset: 16 })
+import 'element-plus/theme-chalk/dark/css-vars.css'
+import 'element-plus/theme-chalk/index.css';
 
-Vue.config.productionTip = false
-Vue.config.devtools = true
+const app = createApp(App)
 
-Wails.Init(() => {
-  new Vue({
-    render: h => h(App),
-    store
-  }).$mount('#app')
-})
+//注册所有图标
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
+
+app.use(router)
+// app.use(ElementPlus, { size: 'default',locale: zhCn });
+app.use(ElementPlus);
+
+//全局组件注册
+setupComponent(app)
+
+app.mount('#app')
