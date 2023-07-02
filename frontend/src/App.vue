@@ -1,22 +1,19 @@
 <script lang="ts" setup>
-import { HelloWorld } from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'
+import { useDark, useToggle  } from '@vueuse/core'
+import Home from "@/layout/layout.vue"
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
+
 </script>
 
 <template>
-  <img id="logo" alt="Wails logo" src="./assets/images/logo-universal.png"/>
-  <HelloWorld/>
+  <!-- <HelloWorld/> -->
+  <div style="--wails-draggable:drag">
+    <Home/> 
+  </div>
 </template>
 
 <style>
-#logo {
-  display: block;
-  width: 50%;
-  height: 50%;
-  margin: auto;
-  padding: 10% 0 0;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-origin: content-box;
-}
+
 </style>

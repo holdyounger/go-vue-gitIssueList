@@ -9,6 +9,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import setupComponent from '@/components'
 import '@/styles/style.scss' // global css
 
+import 'element-plus/theme-chalk/src/dark/css-vars.scss'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'element-plus/theme-chalk/index.css';
 
@@ -20,8 +21,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 app.use(router)
-// app.use(ElementPlus, { size: 'default',locale: zhCn });
-app.use(ElementPlus);
+app.use(ElementPlus, { size: 'default',locale: zhCn });
 
 //全局组件注册
 setupComponent(app)
