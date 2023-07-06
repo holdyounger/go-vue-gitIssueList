@@ -1,20 +1,8 @@
 <template>
   <div id="header">
     <el-row :gutter="0">
-      <el-col :span="5" :xs="4" :sm="4" :lg="4" :xl="4">
-          <el-image style="width: 40px; height: 40px; border-radius: 10px;right: 10px;" :src="avatar" :zoom-rate="1.2"
-            :preview-src-list="srcList" :initial-index="4" fit="cover" />
-          <el-text class="mx-1" size="large" tag="b">GitIssue Tools</el-text>
-      </el-col>
-      <el-col :span="18" :xs="18" :sm="17" :lg="21" :xl="22">
-          <el-breadcrumb class="breadcrumb" :separator-icon="ArrowRight">
-            <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/About' }">About</el-breadcrumb-item>
-            <el-breadcrumb-item>promotion list</el-breadcrumb-item>
-            <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
-          </el-breadcrumb>
-      </el-col>
-      <el-col :span="4" :xs="5" :sm="3" :lg="2" :xl="1">
+      <el-col :span="4" :xs="1" :sm="1" :lg="1" :xl="1" ></el-col>
+      <el-col :span="4" :xs="1" :sm="7" class="text-right">
         <el-row>
           <el-col :span="3" :xs="7" :sm="7" :md="5" :lg="5" :xl="8">
             <el-button @click="toggleDark()" :icon="GetButtonMode()" size="small" circle plain></el-button>
@@ -25,18 +13,16 @@
             </el-badge>
           </el-col>
           <el-col :span="3" :xs="1" :sm="1" :md="5" :lg="5" :xl="8">
-            <el-button @click="Quit" @mouseleave="handleMouseLeave" @contextmenu="handleRightClick"
-              @mouseenter="handleMouseEnter" type="danger" :icon="SwitchButton" color="#c45656" size="small" circle />
+            <el-button @click="Quit" @mouseleave="handleMouseLeave" @contextmenu="handleRightClick" @mouseenter="handleMouseEnter" type="danger" :icon="SwitchButton" color="#c45656" size="small" circle />
           </el-col>
         </el-row>
-        <el-row @mouseenter="handleMouseEnter">
+        <el-row  @mouseenter="handleMouseEnter">
           <el-col :span="3" :xs="0" :sm="7" :md="5" :lg="5" :xl="8">
           </el-col>
           <el-col :span="3" :xs="0" :sm="12" :md="5" :lg="10" :xl="8">
           </el-col>
           <el-col :span="3" :xs="1" :sm="1" :md="5" :lg="5" :xl="8">
-            <el-space @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter" direction="vertical"
-              v-show="data.isShowMenu" wrap>
+            <el-space @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter" direction="vertical" v-show="data.isShowMenu" wrap>
               <el-button @mouseenter="handleMouseEnter" type="success" :icon="SemiSelect" size="small" circle />
               <el-button @mouseenter="handleMouseEnter" type="warning" :icon="FullScreen" size="small" circle />
             </el-space>
@@ -51,16 +37,15 @@
 import { reactive, computed } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { } from '@element-plus/icons-vue'
-import { Close, SelectFile } from '../../../wailsjs/go/main/App'
+// import {Close,SelectFile} from '../../../wailsjs/go/service/App'
+import {Close,SelectFile} from '#/go/service/App'
 
 import {
   Message,
   SwitchButton,
   FullScreen,
   SemiSelect,
-  Moon, 
-  Sunny,
-  ArrowRight,
+  Moon, Sunny,
 } from '@element-plus/icons-vue'
 import aitePng from '@/assets/images/aite.png'
 const avatar = aitePng
@@ -85,7 +70,7 @@ const data = reactive({
 })
 
 function Quit() {
-  SelectFile("", "*.rdb").then((path: string) => {
+  SelectFile("","*.rdb").then((path:string) => {
     console.log(`选择的文件路径为：${path}`);
     data.resultText = path;
   })
@@ -124,7 +109,8 @@ function handleMouseLeave() {
   // 例如显示提示信息、改变样式等
   data.isHover = false
   setTimeout(() => {
-    if (!data.isHover) {
+    if(!data.isHover)
+    {
       data.isShowMenu = false
     }
   }, 100)
@@ -139,24 +125,7 @@ function handleMouseLeave() {
   ;
 }
 
-el-row {
+.el-row {
   margin-bottom: 5px;
-  align-items: center;
-}
-
-.info {
-  display: flex;
-}
-
-.breadcrumb.el-breadcrumb {
-  display: inline-block;
-  font-size: 14px;
-  line-height: 50px;
-  margin-left: 8px;
-
-  .no-redirect {
-    color: #97a8be;
-    cursor: text;
-  }
 }
 </style>

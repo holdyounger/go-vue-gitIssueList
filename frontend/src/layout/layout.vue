@@ -1,12 +1,10 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header class="el-header" height="45px" fixed><Header/></el-header>
+      <el-aside class="el-aside" width="200px"><AsideBar/></el-aside>
       <el-container>
-        <el-aside class="el-aside" width="200px"><AsideBar/></el-aside>
-        <el-container>
+          <el-header class="el-header" height="45px" fixed><Header/></el-header>
           <el-main class="el-main"><Main/></el-main>
-        </el-container>
       </el-container>
     </el-container>
     <el-footer class="el-footer"><Footer/></el-footer>
@@ -29,24 +27,13 @@ const handleAbout = () => {
 </script>
 
 <style lang="scss" scoped>
-.el-header {
-        position: absolute;
-        width: 100%;
-        height: 60px;      
-    }
+
 .el-footer {
     position: absolute;
     top: 96%;
     width: 100%;
     height: 4%;      
     max-height: 40px;
-}
-.el-aside {
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 60px;
-  bottom: 0;
 }
 
 .common-layout {
@@ -59,7 +46,7 @@ const handleAbout = () => {
   right: 0;
   top: 60px;
   bottom: 0;
-  overflow-y: scroll;
+  overflow-y: hidden;
   }
 
 </style>

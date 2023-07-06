@@ -18,12 +18,15 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "#/*": ["wailsjs/*"]
   },
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
+    "wailsjs/**/*.ts",
+    "wailsjs/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue"
   ],

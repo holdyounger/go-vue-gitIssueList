@@ -1,16 +1,20 @@
-package main
+package service
 
 import (
 	"context"
 	"fmt"
 
 	"github.com/labstack/gommon/log"
+	"github.com/wailsapp/wails/v2/pkg/menu"
+	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx  context.Context
+	menu menu.Menu
+	// 其他字段...
 }
 
 // NewApp creates a new App application struct
@@ -18,17 +22,42 @@ func NewApp() *App {
 	return &App{}
 }
 
-// startup is called when the app starts. The context is saved
-// so we can call the runtime methods
-func (a *App) startup(ctx context.Context) {
-	a.ctx = ctx
+func openFile(_ *menu.CallbackData) {
+
 }
 
-func (a *App) shutdown(ctx context.Context) {
+func (a *App) NewMenu() *menu.Menu {
+	a.menu = *menu.NewMenu()
+	FileMenu := a.menu.AddSubmenu("File")
+	a.menu.AddText("Index", keys.CmdOrCtrl("i"), openFile)
+	a.menu.AddText("About", keys.CmdOrCtrl("b"), openFile)
+
+	FileMenu.AddText("&Open", keys.CmdOrCtrl("o"), openFile)
+	FileMenu.AddSeparator()
+	FileMenu.AddText("Quit", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
+		runtime.Quit(a.ctx)
+	})
+
+	return &a.menu
+}
+
+func GetContext(a *App) *context.Context {
+	return &a.ctx
+}
+
+// startup is called when the app starts. The context is saved
+// so we can call the runtime methods
+func (a *App) Startup(ctx context.Context) {
+	a.ctx = ctx
+
+	a.NewMenu()
+}
+
+func (a *App) Shutdown(ctx context.Context) {
 	fmt.Println("Good Bye,Ming")
 }
 
-func (b *App) beforeClose(ctx context.Context) (prevent bool) {
+func (b *App) BeforeClose(ctx context.Context) (prevent bool) {
 	dialog, err := runtime.MessageDialog(ctx, runtime.MessageDialogOptions{
 		Type:    runtime.QuestionDialog,
 		Title:   "Quit?",

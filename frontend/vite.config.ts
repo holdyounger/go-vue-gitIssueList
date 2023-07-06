@@ -1,16 +1,19 @@
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
-import path from 'path' // 需安装此模块
+import {resolve,join} from 'path' // 需安装此模块
 import AutoImport from "unplugin-auto-import/vite"
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import ElementPlus from 'unplugin-element-plus/vite'
 
+const projectRootDir = resolve(__dirname);
+
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
     alias: {  // 这里就是需要配置resolve里的别名
-      "@": path.join(__dirname, "./src"), // path记得引入
+      "@": join(projectRootDir, "./src"), // path记得引入
+      "#": join(projectRootDir, "./wailsjs"), // path记得引入
       // 'vue': 'vue/dist/vue.esm-bundler.js' // 定义vue的别名，如果使用其他的插件，可能会用到别名
     },
   },

@@ -4,16 +4,14 @@ import (
 	"context"
 	"embed"
 	"fmt"
+	"gitissue/service"
 	"net/http"
 	"os"
 	"strings"
 
 	"github.com/wailsapp/wails/v2"
-	"github.com/wailsapp/wails/v2/pkg/menu"
-	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 //go:embed all:frontend/dist
@@ -40,24 +38,9 @@ func (h *FileLoader) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	res.Write(fileData)
 }
 
-func openFile(_ *menu.CallbackData) {
-
-}
-
 func main() {
 	// Create an instance of the app structure
-	app := NewApp()
-
-	AppMenu := menu.NewMenu()
-	FileMenu := AppMenu.AddSubmenu("File")
-	AppMenu.AddText("Index", keys.CmdOrCtrl("i"), openFile)
-	AppMenu.AddText("About", keys.CmdOrCtrl("b"), openFile)
-
-	FileMenu.AddText("&Open", keys.CmdOrCtrl("o"), openFile)
-	FileMenu.AddSeparator()
-	FileMenu.AddText("Quit", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
-		runtime.Quit(app.ctx)
-	})
+	app := service.NewApp()
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -68,7 +51,7 @@ func main() {
 			Assets:  assets,
 			Handler: NewFileLoader(),
 		},
-		Menu:      AppMenu,
+		Menu:      app.NewMenu(),
 		Frameless: true,
 		// CSSDragProperty: "widows",
 		// CSSDragValue:    "1",
@@ -77,8 +60,8 @@ func main() {
 			app.SetContext(ctx)
 			// otherStruct.SetContext(ctx)
 		},
-		OnShutdown:    app.shutdown,
-		OnBeforeClose: app.beforeClose,
+		OnShutdown:    app.Shutdown,
+		OnBeforeClose: app.BeforeClose,
 		Bind: []interface{}{
 			app,
 			// otherStruct

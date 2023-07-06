@@ -1,4 +1,4 @@
-module changeme
+module gitissue
 
 go 1.18
 
