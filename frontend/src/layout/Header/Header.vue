@@ -1,18 +1,25 @@
 <template>
   <div id="header">
     <el-row :gutter="0">
-      <el-col :span="4" :xs="1" :sm="1" :lg="1" :xl="1" ></el-col>
-      <el-col :span="4" :xs="1" :sm="7" class="text-right">
+      <!-- 
+        xs <768
+        sm >=768
+        md >=992
+        lg >=1200
+        xl >=1920
+       -->
+      <el-col :span="16" :xs="20" :sm="21" :lg="22" :xl="23"  ></el-col>
+      <el-col :span="4" :xs="4" :sm="3" :lg="2" :xl="1" class="text-right" >
         <el-row>
-          <el-col :span="3" :xs="7" :sm="7" :md="5" :lg="5" :xl="8">
+          <el-col :span="3" :xs="0" :sm="7" :md="5" :lg="8" :xl="8" >
             <el-button @click="toggleDark()" :icon="GetButtonMode()" size="small" circle plain></el-button>
           </el-col>
-          <el-col :span="3" :xs="10" :sm="12" :md="5" :lg="10" :xl="8">
+          <el-col :span="3" :xs="0" :sm="12" :md="5" :lg="8" :xl="8" >
             <el-badge :value="12" class="item">
               <el-button type="success" :icon="Message" size="small" circle />
             </el-badge>
           </el-col>
-          <el-col :span="3" :xs="1" :sm="1" :md="5" :lg="5" :xl="8">
+          <el-col :span="3" :xs="1" :sm="1" :md="5" :lg="8" :xl="8" >
             <el-button @click="Quit" @mouseleave="handleMouseLeave" @contextmenu="handleRightClick" @mouseenter="handleMouseEnter" type="danger" :icon="SwitchButton" color="#c45656" size="small" circle />
           </el-col>
         </el-row>
@@ -38,7 +45,7 @@ import { reactive, computed } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { } from '@element-plus/icons-vue'
 // import {Close,SelectFile} from '../../../wailsjs/go/service/App'
-import {Close,SelectFile} from '#/go/service/App'
+import {Close, SelectFile} from '#/go/service/App'
 
 import {
   Message,
