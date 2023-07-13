@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/labstack/gommon/log"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -71,7 +70,7 @@ func (b *App) BeforeClose(ctx context.Context) (prevent bool) {
 }
 
 func (a *App) SetContext(ctx context.Context) {
-	// WindowSetTitle(ctx, "GitIssue")
+	a.ctx = ctx
 }
 
 // Greet returns a greeting for the given name
@@ -88,19 +87,17 @@ func (a *App) Close() {
 	// runtime.Quit(a.ctx)
 }
 
-// SelectFile 选择需要处理的文件
-func (a *App) SelectFile(title string, filetype string) string {
-	// runtime.LogPrint(a.ctx, fmt.Sprintf("FileType: %s", filetype))
-	log.Info(fmt.Sprintf("FileType: %s", filetype))
+func LogPrint(context context.Context, s string) {
+	panic("unimplemented")
+}
 
-	if title == "" {
-		title = "选择文件"
-	}
+// SelectFile 选择需要处理的文件
+func (a *App) SelectFile(filetype string) string {
 	if filetype == "" {
-		filetype = "*.log;*.txt;*.rdb;*.aof"
+		filetype = "*.txt;*.json"
 	}
 	selection, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
-		Title: title,
+		Title: "选择文件",
 		Filters: []runtime.FileFilter{
 			{
 				DisplayName: "文本数据",
@@ -112,8 +109,4 @@ func (a *App) SelectFile(title string, filetype string) string {
 		return fmt.Sprintf("err %s!", err)
 	}
 	return selection
-}
-
-func LogPrint(context context.Context, s string) {
-	panic("unimplemented")
 }

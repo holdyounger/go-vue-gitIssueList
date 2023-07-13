@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside class="el-aside" width="200px"><AsideBar/></el-aside>
+        <el-aside class="el-aside" :class="{ 'dark-mode': $store.state.isDark }"><AsideBar/></el-aside>
       <el-container>
           <el-header class="el-header" height="45px" fixed><Header/></el-header>
           <el-main class="el-main"><Main/></el-main>
@@ -41,12 +41,10 @@ const handleAbout = () => {
 }
 
 .el-main {
-  position: absolute;
-  left: 200px;
-  right: 0;
-  top: 60px;
-  bottom: 0;
-  overflow-y: hidden;
+  @apply right-0 top-60 bottom-0 overflow-y-hidden;
   }
 
+.el-aside {
+  @apply w-auto  bg-gradient-to-br from-blue-500 to-purple-500 min-h-[calc(100%+1rem)];
+}
 </style>

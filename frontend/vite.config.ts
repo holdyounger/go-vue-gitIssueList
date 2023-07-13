@@ -5,6 +5,7 @@ import AutoImport from "unplugin-auto-import/vite"
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import ElementPlus from 'unplugin-element-plus/vite'
+import WindiCSS from 'vite-plugin-windicss'
 
 const projectRootDir = resolve(__dirname);
 
@@ -26,6 +27,7 @@ export default defineConfig({
   // },
   plugins: [ 
     vue(),
+    WindiCSS(),
     ElementPlus({
       useSource: true,
     }),

@@ -1,17 +1,13 @@
 <template>
 <div class="asidebar">
-  <el-space>
-    <el-image 
-    style="width: 40px; height: 40px; border-radius: 10px;right: 10px;" 
-    :src="avatar" 
-    :zoom-rate="1.2"
-    :preview-src-list="srcList" 
-    :initial-index="4" 
-    fit="cover" />
-    <el-text class="mx-1" size="large" tag="b">GitIssue Tools</el-text>
-  </el-space>
-    <el-scrollbar>
-        <el-menu :default-openeds="[]">
+    <el-scrollbar class="w-auto ">
+        <el-menu :default-openeds="[]" :collapse="useStore().state.HomeModule.navBool" >
+          <el-menu-item class="flex justify-center items-center">
+            <el-space class="">
+              <el-avatar :src="avatar" fit="cover" class="bg-white"/>
+            </el-space>
+            <el-text class="mx-1 m-auto" size="large">GitIssue Tools</el-text>
+          </el-menu-item>
           <el-menu-item @click="handleRouter('Welcome')">
             <el-icon color="#409EFC" class="no-inherit"><HomeFilled />
             </el-icon>
@@ -22,39 +18,25 @@
           
           <el-sub-menu index="2">
             <template #title>
-              <el-icon><Menu /></el-icon>API列表
+              <el-icon><Menu /></el-icon>
+              <el-text>API列表</el-text>
             </template>
-
             <el-menu-item-group>
-              <template #title>Issues</template>
-              <el-menu-item index="2-1">Option 1</el-menu-item>
-              <el-menu-item index="2-2">Option 2</el-menu-item>
+              <!-- 列出分配给经过身份验证的用户的问题 -->
+              <el-menu-item index="2-1" @click="addAuthenticatedPage">Authenticated List</el-menu-item> 
+              <!-- 列出分配给经过身份验证的用户的组织问题 -->
+              <el-menu-item index="2-2">Authenticated & Organization</el-menu-item>
+              <!-- 列出存储库问题 -->
+              <el-menu-item index="2-2">Repository</el-menu-item>
             </el-menu-item-group>
-            <el-menu-item-group title="Group 2">
-              <el-menu-item index="2-3">Option 3</el-menu-item>
-            </el-menu-item-group>
-            <el-sub-menu index="2-4">
-              <template #title>Option 4</template>
-              <el-menu-item index="2-4-1">Option 4-1</el-menu-item>
-            </el-sub-menu>
           </el-sub-menu>
           <el-sub-menu index="3">
             <template #title>
-              <el-icon><setting /></el-icon>设置
+              <el-icon><setting /></el-icon>
+              <el-text>设置</el-text>
             </template>
-            <el-menu-item-group>
-              <template #title>基础设置</template>
-              <el-menu-item index="3-1">Option 1</el-menu-item>
-              <el-menu-item index="3-2">Option 2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group title="Group 2">
-                <template #title>其它</template>
-              <el-menu-item index="3-3">Option 3</el-menu-item>
-            </el-menu-item-group>
-            <el-sub-menu index="3-4">
-              <template #title>其他</template>
-              <el-menu-item index="3-4-1">Option 4-1</el-menu-item>
-            </el-sub-menu>
+              <el-menu-item index="3-1">基础设置</el-menu-item>
+              <el-menu-item index="3-2">其它</el-menu-item>
           </el-sub-menu>
           
         <el-menu-item @click="handleRouter('About')">
@@ -72,6 +54,7 @@
 <script lang="ts" setup>
 import aitePng from '@/assets/images/aite.png'
 import { reactive,ref } from 'vue';
+import { useStore } from '@/store';
 import { useRoute, useRouter } from "vue-router";
 
 const avatar = aitePng
@@ -99,8 +82,16 @@ let APIList = ref<IssueList> ({
 
 })
 
+const addAuthenticatedPage = ()=>{
+
+};
+
 </script>
 
 <style lang="scss">
+
+.asidebar {
+  @apply w-auto;
+}
 
 </style>

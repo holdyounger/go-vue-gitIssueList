@@ -18,8 +18,8 @@ export function PrintGreet(arg1) {
   return window['go']['service']['App']['PrintGreet'](arg1);
 }
 
-export function SelectFile(arg1, arg2) {
-  return window['go']['service']['App']['SelectFile'](arg1, arg2);
+export function SelectFile(arg1) {
+  return window['go']['service']['App']['SelectFile'](arg1);
 }
 
 export function SetContext(arg1) {

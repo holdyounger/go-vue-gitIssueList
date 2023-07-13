@@ -11,7 +11,7 @@ export function NewMenu():Promise<menu.Menu>;
 
 export function PrintGreet(arg1:string):Promise<string>;
 
-export function SelectFile(arg1:string,arg2:string):Promise<string>;
+export function SelectFile(arg1:string):Promise<string>;
 
 export function SetContext(arg1:context.Context):Promise<void>;
 

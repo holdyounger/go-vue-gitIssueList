@@ -1,6 +1,6 @@
 <template>
-  <div id="header">
-    <el-row :gutter="0">
+  <div id="header" @dblclick="handleFullScreen">
+    <el-row :gutter="0" class=" ">
       <!-- 
         xs <768
         sm >=768
@@ -8,33 +8,18 @@
         lg >=1200
         xl >=1920
        -->
-      <el-col :span="16" :xs="20" :sm="21" :lg="22" :xl="23"  ></el-col>
-      <el-col :span="4" :xs="4" :sm="3" :lg="2" :xl="1" class="text-right" >
-        <el-row>
-          <el-col :span="3" :xs="0" :sm="7" :md="5" :lg="8" :xl="8" >
-            <el-button @click="toggleDark()" :icon="GetButtonMode()" size="small" circle plain></el-button>
-          </el-col>
-          <el-col :span="3" :xs="0" :sm="12" :md="5" :lg="8" :xl="8" >
-            <el-badge :value="12" class="item">
-              <el-button type="success" :icon="Message" size="small" circle />
-            </el-badge>
-          </el-col>
-          <el-col :span="3" :xs="1" :sm="1" :md="5" :lg="8" :xl="8" >
-            <el-button @click="Quit" @mouseleave="handleMouseLeave" @contextmenu="handleRightClick" @mouseenter="handleMouseEnter" type="danger" :icon="SwitchButton" color="#c45656" size="small" circle />
-          </el-col>
-        </el-row>
-        <el-row  @mouseenter="handleMouseEnter">
-          <el-col :span="3" :xs="0" :sm="7" :md="5" :lg="5" :xl="8">
-          </el-col>
-          <el-col :span="3" :xs="0" :sm="12" :md="5" :lg="10" :xl="8">
-          </el-col>
-          <el-col :span="3" :xs="1" :sm="1" :md="5" :lg="5" :xl="8">
-            <el-space @mouseleave="handleMouseLeave" @mouseenter="handleMouseEnter" direction="vertical" v-show="data.isShowMenu" wrap>
-              <el-button @mouseenter="handleMouseEnter" type="success" :icon="SemiSelect" size="small" circle />
-              <el-button @mouseenter="handleMouseEnter" type="warning" :icon="FullScreen" size="small" circle />
-            </el-space>
-          </el-col>
-        </el-row>
+      <el-col :span="12" :xs="16" :sm="16" :md="20" :lg="20" :xl="20" class="" >
+        <el-icon @click="changeNavState" :size="35" class="NavState">
+          <Fold v-if="!store.state.HomeModule.navBool" />
+          <Expand v-else /> </el-icon>
+      </el-col>
+      <el-col :span="4" :xs="8" :sm="8" :md="4" :lg="4" :xl="4" class="text-right" >
+        <el-button @click="toggleDark()" :icon="GetButtonMode()" size="small" circle plain></el-button>
+        <!-- <el-container @mouseenter="handleMouseEnter"> -->
+          <el-button @click="handleSmallScreen" @mouseenter="handleMouseEnter" type="success" :icon="SemiSelect" size="small" circle />
+          <el-button @click="handleFullScreen" @mouseenter="handleMouseEnter" type="warning" :icon="data.isFullScreen ? CirclePlusFilled : RemoveFilled" size="small" circle />
+        <!-- </el-container> -->
+        <el-button @click="handleQuit" @mouseleave="handleMouseLeave" @contextmenu="handleRightClick" @mouseenter="handleMouseEnter" type="danger" :icon="SwitchButton" color="#c45656" size="small" circle />
       </el-col>
     </el-row>
   </div>
@@ -43,22 +28,31 @@
 <script lang="ts" setup>
 import { reactive, computed } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
+import { useStore } from '@/store'
 import { } from '@element-plus/icons-vue'
-// import {Close,SelectFile} from '../../../wailsjs/go/service/App'
-import {Close, SelectFile} from '#/go/service/App'
+import { 
+  Quit, 
+  WindowFullscreen,
+   WindowIsFullscreen, 
+   WindowUnfullscreen,
+   WindowMinimise
+} from '#/runtime'
 
 import {
   Message,
   SwitchButton,
-  FullScreen,
+  CirclePlusFilled,
+  RemoveFilled,
   SemiSelect,
   Moon, Sunny,
 } from '@element-plus/icons-vue'
 import aitePng from '@/assets/images/aite.png'
 const avatar = aitePng
 
+const store = useStore()
+
 const isDark = useDark()
-const toggleDark = useToggle(isDark)
+const toggleDark = useToggle(isDark);
 
 const srcList = [
   'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
@@ -73,24 +67,35 @@ const srcList = [
 const data = reactive({
   isShowMenu: false,
   isHover: false,
+  isFullScreen: false,
   resultText: "Please enter your name below 👇",
 })
 
-function Quit() {
-  SelectFile("","*.rdb").then((path:string) => {
-    console.log(`选择的文件路径为：${path}`);
-    data.resultText = path;
-  })
+// const Quit = async() => {
+//   const path = await SelectFile("");
+//   console.log("选择文件的路径", path)
+// }
+
+const changeNavState =() => {
+  store.commit("SET_NAV_BOOL")
 }
+
+const handleQuit =() => Quit();
+
+const handleSmallScreen =() => WindowMinimise();
+
+const handleFullScreen = async () => {
+  data.isFullScreen = await WindowIsFullscreen();
+  if( data.isFullScreen )
+    WindowUnfullscreen();
+  else
+    WindowFullscreen();
+}
+
 
 function GetButtonMode() {
   return isDark.value ? 'Moon' : 'Sunny';
 }
-
-// 添加一个计算属性来返回颜色的值
-const iconColor = computed(() => {
-  return "red"; // 这里可以根据你的需求返回不同的颜色值
-})
 
 function handleRightClick(event: any) {
   // 阻止浏览器默认的右击事件
@@ -135,4 +140,9 @@ function handleMouseLeave() {
 .el-row {
   margin-bottom: 5px;
 }
+
+.NavState {
+  @apply float-left animate-duration-2s animate-delay-500ms hover:bg-purple-500;
+}
+
 </style>
